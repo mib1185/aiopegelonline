@@ -125,17 +125,14 @@ class PegelOnline:
 
     async def async_get_station_measurement(self, uuid: str) -> CurrentMeasurement:
         """Get current measurement of a station."""
-        station = await self._async_do_request(
-            f"{BASE_URL}/stations/{uuid}.json",
+        measurement = await self._async_do_request(
+            f"{BASE_URL}/stations/{uuid}/W.json",
             {
                 "prettyprint": "false",
-                "includeTimeseries": "true",
                 "includeCurrentMeasurement": "true",
-                "timeseries": "W",
             },
         )
 
-        measurement = station["timeseries"][0]
         return CurrentMeasurement(
             measurement["unit"], measurement["currentMeasurement"]["value"]
         )
