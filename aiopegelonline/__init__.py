@@ -79,6 +79,34 @@ class PegelOnline:
 
         return result
 
+    async def async_get_nearby_stations(
+        self, latitude: float, longitude: float, radius: int
+    ) -> dict[str, Station]:
+        """Get stations within defined radius at given position."""
+        stations = await self._async_do_request(
+            f"{BASE_URL}/stations.json",
+            {
+                "prettyprint": "false",
+                "latitude": latitude,
+                "longitude": longitude,
+                "radius": radius,
+            },
+        )
+
+        result = {}
+        for station in stations:
+            result[station["uuid"]] = Station(
+                station["uuid"],
+                station["longname"],
+                station["agency"],
+                station.get("km"),
+                station.get("longitude"),
+                station.get("latitude"),
+                station["water"]["longname"],
+            )
+
+        return result
+
     async def async_get_station_details(self, uuid: str) -> Station:
         """Get station details."""
         station = await self._async_do_request(
