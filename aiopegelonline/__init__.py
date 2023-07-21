@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 
 from aiohttp.client import ClientSession
@@ -45,7 +46,9 @@ class PegelOnline:
             async with self.session.get(
                 url, params=params, timeout=REQUEST_TIMEOUT
             ) as resp:
-                result = await resp.json()
+                result = await resp.text()
+                LOGGER.debug("RESPONSE status: %s text: %s", resp.status, result)
+                result = json.loads(result)
                 if resp.status != 200:
                     raise PegelonlineDataError(
                         result.get("status"), result.get("message")
@@ -75,6 +78,22 @@ class PegelOnline:
             )
 
         return result
+
+    async def async_get_station_details(self, uuid: str) -> Station:
+        """Get station details."""
+        station = await self._async_do_request(
+            f"{BASE_URL}/stations/{uuid}.json", {"prettyprint": "false"}
+        )
+
+        return Station(
+            station["uuid"],
+            station["longname"],
+            station["agency"],
+            station.get("km"),
+            station.get("longitude"),
+            station.get("latitude"),
+            station["water"]["longname"],
+        )
 
     async def async_get_station_measurement(self, uuid: str) -> CurrentMeasurement:
         """Get current measurement of a station."""
