@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 PROJECT_DIR = Path(__file__).parent.resolve()
 README_FILE = PROJECT_DIR / "README.md"
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 
 setup(
@@ -22,9 +22,7 @@ setup(
     package_data={"aiopegelonline": ["py.typed"]},
     zip_safe=True,
     platforms="any",
-    install_requires=list(
-        val.strip() for val in open("requirements.txt", encoding="utf-8")
-    ),
+    install_requires=["aiohttp"],
     classifiers=[
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
