@@ -11,17 +11,21 @@ from .const import BASE_URL, CONNECT_ERRORS, LOGGER, REQUEST_TIMEOUT
 from .exceptions import PegelonlineDataError
 
 
-@dataclass
 class Station:
     """Representation of a station."""
 
-    uuid: str
-    name: str
-    agency: str
-    river_kilometer: float | None
-    longitude: float | None
-    latitude: float | None
-    water_name: str
+    def __init__(self, data: dict) -> None:
+        """Initialize station class."""
+        self.uuid: str = data["uuid"]
+        self.name: str = data["longname"]
+        self.agency: str = data["agency"]
+        self.river_kilometer: float | None = data.get("km")
+        self.longitude: float | None = data.get("longitude")
+        self.latitude: float | None = data.get("latitude")
+        self.water_name: str = data["water"]["longname"]
+        self.base_data_url: str = (
+            f"https://www.pegelonline.wsv.de/gast/stammdaten?pegelnr={data['number']}"
+        )
 
 
 @dataclass
@@ -67,15 +71,7 @@ class PegelOnline:
 
         result = {}
         for station in stations:
-            result[station["uuid"]] = Station(
-                station["uuid"],
-                station["longname"],
-                station["agency"],
-                station.get("km"),
-                station.get("longitude"),
-                station.get("latitude"),
-                station["water"]["longname"],
-            )
+            result[station["uuid"]] = Station(station)
 
         return result
 
@@ -95,15 +91,7 @@ class PegelOnline:
 
         result = {}
         for station in stations:
-            result[station["uuid"]] = Station(
-                station["uuid"],
-                station["longname"],
-                station["agency"],
-                station.get("km"),
-                station.get("longitude"),
-                station.get("latitude"),
-                station["water"]["longname"],
-            )
+            result[station["uuid"]] = Station(station)
 
         return result
 
@@ -113,15 +101,7 @@ class PegelOnline:
             f"{BASE_URL}/stations/{uuid}.json", {"prettyprint": "false"}
         )
 
-        return Station(
-            station["uuid"],
-            station["longname"],
-            station["agency"],
-            station.get("km"),
-            station.get("longitude"),
-            station.get("latitude"),
-            station["water"]["longname"],
-        )
+        return Station(station)
 
     async def async_get_station_measurement(self, uuid: str) -> CurrentMeasurement:
         """Get current measurement of a station."""
