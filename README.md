@@ -8,6 +8,10 @@
 
 Asynchronous library to retrieve data from [PEGELONLINE](https://www.pegelonline.wsv.de/).
 
+:warning: **this is in early development state** :warning:
+
+breaking changes may occure at every time
+
 ## Requirements
 
 - Python >= 3.9
