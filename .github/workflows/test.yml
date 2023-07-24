@@ -29,6 +29,21 @@ jobs:
         run: |
           pre-commit run --all-files --show-diff-on-failure
 
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3.5.3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements_dev.txt -e .
+
       - name: Run tests
         run: |
           pytest tests
