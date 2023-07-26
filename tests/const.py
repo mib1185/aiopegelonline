@@ -14,30 +14,126 @@ MOCK_STATION_DATA_DRESDEN = {
     "water": {"shortname": "ELBE", "longname": "ELBE"},
 }
 
-MOCK_MEASUREMENT_DATA_DRESDEN = {
-    "shortname": "W",
-    "longname": "WASSERSTAND ROHDATEN",
-    "unit": "cm",
-    "equidistance": 15,
-    "currentMeasurement": {
-        "timestamp": "2023-07-24T23:00:00+02:00",
-        "value": 60,
-        "stateMnwMhw": "low",
-        "stateNswHsw": "normal",
-    },
-    "gaugeZero": {"unit": "m. ü. NHN", "value": 102.7, "validFrom": "2019-11-01"},
+MOCK_MEASUREMENT_DATA_HANAU_BRIDGE = {
+    "uuid": "07374faf-xxxx-xxxx-xxxx-adc0e0784c4b",
+    "number": "24700347",
+    "shortname": "HANAU BRÜCKE DFH",
+    "longname": "HANAU BRÜCKE DFH",
+    "km": 56.398,
+    "agency": "ASCHAFFENBURG",
+    "water": {"shortname": "MAIN", "longname": "MAIN"},
+    "timeseries": [
+        {
+            "shortname": "DFH",
+            "longname": "DURCHFAHRTSHÖHE",
+            "unit": "cm",
+            "equidistance": 15,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:45:00+02:00",
+                "value": 715,
+            },
+            "gaugeZero": {
+                "unit": "m. ü. NHN",
+                "value": 106.501,
+                "validFrom": "2019-11-01",
+            },
+        }
+    ],
 }
 
-MOCK_STATION_DATA_HAMBURG = {
-    "uuid": "706e5110-xxxx-xxxx-xxxx-c071fcb492ec",
-    "number": "5952025",
-    "shortname": "HAMBURG-HARBURG",
-    "longname": "HAMBURG-HARBURG",
-    "km": 615,
-    "agency": "HAMBURG PORT AUTHORITY",
-    "longitude": 9.991814826063601,
-    "latitude": 53.472725901227285,
-    "water": {"shortname": "ELBE", "longname": "ELBE"},
+MOCK_STATION_DATA_WUERZBURG = {
+    "uuid": "915d76e1-xxxx-xxxx-xxxx-4d144cd771cc",
+    "number": "24300600",
+    "shortname": "WÜRZBURG",
+    "longname": "WÜRZBURG",
+    "km": 251.97,
+    "agency": "SCHWEINFURT",
+    "longitude": 9.925968763247354,
+    "latitude": 49.79620901036012,
+    "water": {"shortname": "MAIN", "longname": "MAIN"},
+}
+
+MOCK_MEASUREMENT_DATA_WUERZBURG = {
+    **MOCK_STATION_DATA_WUERZBURG,
+    "timeseries": [
+        {
+            "shortname": "W",
+            "longname": "WASSERSTAND ROHDATEN",
+            "unit": "cm",
+            "equidistance": 15,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:15:00+02:00",
+                "value": 159,
+                "stateMnwMhw": "normal",
+                "stateNswHsw": "normal",
+            },
+            "gaugeZero": {
+                "unit": "m. ü. NHN",
+                "value": 164.511,
+                "validFrom": "2019-11-01",
+            },
+        },
+        {
+            "shortname": "LT",
+            "longname": "LUFTTEMPERATUR",
+            "unit": "°C",
+            "equidistance": 60,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:00:00+02:00",
+                "value": 21.2,
+            },
+        },
+        {
+            "shortname": "WT",
+            "longname": "WASSERTEMPERATUR",
+            "unit": "°C",
+            "equidistance": 60,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:00:00+02:00",
+                "value": 22.1,
+            },
+        },
+        {
+            "shortname": "VA",
+            "longname": "FLIESSGESCHWINDIGKEIT",
+            "unit": "m/s",
+            "equidistance": 15,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:15:00+02:00",
+                "value": 0.58,
+            },
+        },
+        {
+            "shortname": "O2",
+            "longname": "SAUERSTOFFGEHALT",
+            "unit": "mg/l",
+            "equidistance": 60,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:00:00+02:00",
+                "value": 8.4,
+            },
+        },
+        {
+            "shortname": "PH",
+            "longname": "PH-WERT",
+            "unit": "--",
+            "equidistance": 60,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:00:00+02:00",
+                "value": 8.1,
+            },
+        },
+        {
+            "shortname": "Q",
+            "longname": "ABFLUSS",
+            "unit": "m³/s",
+            "equidistance": 15,
+            "currentMeasurement": {
+                "timestamp": "2023-07-26T19:00:00+02:00",
+                "value": 102,
+            },
+        },
+    ],
 }
 
 MOCK_DATA = {
@@ -45,7 +141,7 @@ MOCK_DATA = {
         "status": 200,
         "body": [
             MOCK_STATION_DATA_DRESDEN,
-            MOCK_STATION_DATA_HAMBURG,
+            MOCK_STATION_DATA_WUERZBURG,
         ],
     },
     "stations.json?prettyprint=false&latitude=13&longitude=51&radius=25": {
@@ -74,8 +170,12 @@ MOCK_DATA = {
         "body": None,
         "exception": ClientError,
     },
-    "stations/70272185-xxxx-xxxx-xxxx-43bea330dcae/W.json?prettyprint=false&includeCurrentMeasurement=true": {
+    "stations/915d76e1-xxxx-xxxx-xxxx-4d144cd771cc.json?prettyprint=false&includeTimeseries=true&includeCurrentMeasurement=true": {
         "status": 200,
-        "body": MOCK_MEASUREMENT_DATA_DRESDEN,
+        "body": MOCK_MEASUREMENT_DATA_WUERZBURG,
+    },
+    "stations/07374faf-xxxx-xxxx-xxxx-adc0e0784c4b.json?prettyprint=false&includeTimeseries=true&includeCurrentMeasurement=true": {
+        "status": 200,
+        "body": MOCK_MEASUREMENT_DATA_HANAU_BRIDGE,
     },
 }

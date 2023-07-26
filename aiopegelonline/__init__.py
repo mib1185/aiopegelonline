@@ -3,37 +3,12 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
 
 from aiohttp.client import ClientSession
 
 from .const import BASE_URL, CONNECT_ERRORS, LOGGER, REQUEST_TIMEOUT
 from .exceptions import PegelonlineDataError
-
-
-class Station:
-    """Representation of a station."""
-
-    def __init__(self, data: dict) -> None:
-        """Initialize station class."""
-        self.uuid: str = data["uuid"]
-        self.name: str = data["longname"]
-        self.agency: str = data["agency"]
-        self.river_kilometer: float | None = data.get("km")
-        self.longitude: float | None = data.get("longitude")
-        self.latitude: float | None = data.get("latitude")
-        self.water_name: str = data["water"]["longname"]
-        self.base_data_url: str = (
-            f"https://www.pegelonline.wsv.de/gast/stammdaten?pegelnr={data['number']}"
-        )
-
-
-@dataclass
-class CurrentMeasurement:
-    """Representation of a current measurement."""
-
-    uom: str
-    value: float
+from .models import Station, StationMeasurements
 
 
 class PegelOnline:
@@ -103,16 +78,15 @@ class PegelOnline:
 
         return Station(station)
 
-    async def async_get_station_measurement(self, uuid: str) -> CurrentMeasurement:
-        """Get current measurement of a station."""
-        measurement = await self._async_do_request(
-            f"{BASE_URL}/stations/{uuid}/W.json",
+    async def async_get_station_measurements(self, uuid: str) -> StationMeasurements:
+        """Get all current measurements of a station."""
+        station = await self._async_do_request(
+            f"{BASE_URL}/stations/{uuid}.json",
             {
                 "prettyprint": "false",
+                "includeTimeseries": "true",
                 "includeCurrentMeasurement": "true",
             },
         )
 
-        return CurrentMeasurement(
-            measurement["unit"], measurement["currentMeasurement"]["value"]
-        )
+        return StationMeasurements(station["timeseries"])
