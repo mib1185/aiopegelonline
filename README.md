@@ -56,9 +56,13 @@ from aiopegelonline import PegelOnline
 async def main():
     async with aiohttp.ClientSession() as session:
         pegelonline = PegelOnline(session)
-        measurement = await pegelonline.async_get_station_measurement("70272185-b2b3-4178-96b8-43bea330dcae")
-        print(f"current water level: {measurement.value} {measurement.uom}")
+        measurements = await pegelonline.async_get_station_measurements("70272185-b2b3-4178-96b8-43bea330dcae")
 
+    for name, data in measurements.as_dict().items():
+        if data is None:
+            print(f"{name} not provided by measurement station")
+        else:
+            print(f"{name}: {data.value} {data.uom}")
 
 if __name__ == "__main__":
     asyncio.run(main())
