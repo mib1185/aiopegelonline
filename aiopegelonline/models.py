@@ -19,6 +19,19 @@ class Station:
             f"https://www.pegelonline.wsv.de/gast/stammdaten?pegelnr={data['number']}"
         )
 
+    def as_dict(self) -> dict[str, str | float | None]:
+        """Return data das dict."""
+        return {
+            "uuid": self.uuid,
+            "name": self.name,
+            "agency": self.agency,
+            "river_kilometer": self.river_kilometer,
+            "longitude": self.longitude,
+            "latitude": self.latitude,
+            "water_name": self.water_name,
+            "base_data_url": self.base_data_url,
+        }
+
 
 class CurrentMeasurement:
     """Representation of a current measurement."""
@@ -27,6 +40,13 @@ class CurrentMeasurement:
         """Initialize current measurment class."""
         self.uom: str = data["unit"]
         self.value: float = data["currentMeasurement"]["value"]
+
+    def as_dict(self) -> dict[str, str | float]:
+        """Return data das dict."""
+        return {
+            "uom": self.uom,
+            "value": self.value,
+        }
 
 
 class StationMeasurements:
@@ -60,3 +80,16 @@ class StationMeasurements:
                 self.water_level = CurrentMeasurement(measurement)
             elif measurement["shortname"] == "WT":
                 self.water_temperature = CurrentMeasurement(measurement)
+
+    def as_dict(self) -> dict[str, CurrentMeasurement | None]:
+        """Return data das dict."""
+        return {
+            "air_temperature": self.air_temperature,
+            "clearance_height": self.clearance_height,
+            "oxygen_level": self.oxygen_level,
+            "ph_value": self.ph_value,
+            "water_speed": self.water_speed,
+            "water_flow": self.water_flow,
+            "water_level": self.water_level,
+            "water_temperature": self.water_temperature,
+        }
