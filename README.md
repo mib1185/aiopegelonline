@@ -1,5 +1,6 @@
 [![Test](https://github.com/mib1185/aiopegelonline/actions/workflows/test.yml/badge.svg)](https://github.com/mib1185/aiopegelonline/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/mib1185/aiopegelonline/branch/main/graph/badge.svg?token=QRC1NSIONL)](https://codecov.io/gh/mib1185/aiopegelonline)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e87241f5f51003ac7353/maintainability)](https://codeclimate.com/github/mib1185/aiopegelonline/maintainability)
 [![Library version](https://img.shields.io/pypi/v/aiopegelonline.svg)](https://pypi.org/project/aiopegelonline)
 [![Supported versions](https://img.shields.io/pypi/pyversions/aiopegelonline.svg)](https://pypi.org/project/aiopegelonline)
 [![Downloads](https://pepy.tech/badge/aiopegelonline)](https://pypi.org/project/aiopegelonline)
