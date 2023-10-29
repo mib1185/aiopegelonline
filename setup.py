@@ -17,7 +17,7 @@ setup(
     description="Asynchronous library to retrieve data from PEGELONLINE.",
     long_description=README_FILE.read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",
-    packages=find_packages(),
+    packages=["aiopegelonline"],
     python_requires=">=3.9",
     package_data={"aiopegelonline": ["py.typed"]},
     zip_safe=True,
