@@ -1,5 +1,5 @@
 -r requirements.txt
-aioresponses==0.7.4
+aioresponses==0.7.6
 black==23.7.0
 flake8-docstrings==1.7.0
 flake8==6.0.0

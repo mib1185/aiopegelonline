@@ -8,11 +8,10 @@ from aiopegelonline.exceptions import PegelonlineDataError
 from aiopegelonline.models import Station, StationMeasurements
 
 
-@pytest.mark.asyncio
-async def test_get_all_stations(mock_pegelonline):
+async def test_get_all_stations(mock_pegelonline_with_data):
     """Test async_get_all_stations."""
-    # with mock_response:
-    stations = await mock_pegelonline.async_get_all_stations()
+    api = await mock_pegelonline_with_data()
+    stations = await api.async_get_all_stations()
     assert len(stations) == 2
 
     station = stations["70272185-xxxx-xxxx-xxxx-43bea330dcae"]
@@ -43,10 +42,10 @@ async def test_get_all_stations(mock_pegelonline):
     )
 
 
-@pytest.mark.asyncio
-async def test_get_nearby_stations(mock_pegelonline):
+async def test_get_nearby_stations(mock_pegelonline_with_data):
     """Test async_get_nearby_stations."""
-    stations = await mock_pegelonline.async_get_nearby_stations(13, 51, 25)
+    api = await mock_pegelonline_with_data()
+    stations = await api.async_get_nearby_stations(13, 51, 25)
     assert len(stations) == 1
 
     station = stations["70272185-xxxx-xxxx-xxxx-43bea330dcae"]
@@ -64,17 +63,17 @@ async def test_get_nearby_stations(mock_pegelonline):
     )
 
 
-@pytest.mark.asyncio
-async def test_get_nearby_stations_no_stations(mock_pegelonline):
+async def test_get_nearby_stations_no_stations(mock_pegelonline_with_data):
     """Test async_get_nearby_stations."""
-    stations = await mock_pegelonline.async_get_nearby_stations(10, 45, 25)
+    api = await mock_pegelonline_with_data()
+    stations = await api.async_get_nearby_stations(10, 45, 25)
     assert len(stations) == 0
 
 
-@pytest.mark.asyncio
-async def test_get_station_details(mock_pegelonline):
+async def test_get_station_details(mock_pegelonline_with_data):
     """Test async_get_station_details."""
-    station = await mock_pegelonline.async_get_station_details(
+    api = await mock_pegelonline_with_data()
+    station = await api.async_get_station_details(
         "70272185-xxxx-xxxx-xxxx-43bea330dcae"
     )
     assert isinstance(station, Station)
@@ -91,24 +90,24 @@ async def test_get_station_details(mock_pegelonline):
     )
 
 
-@pytest.mark.asyncio
-async def test_get_station_details_invalid(mock_pegelonline):
+async def test_get_station_details_invalid(mock_pegelonline_with_data):
     """Test async_get_station_details with invalid uuid."""
+    api = await mock_pegelonline_with_data()
     with pytest.raises(PegelonlineDataError):
-        await mock_pegelonline.async_get_station_details("INVALID_UUID")
+        await api.async_get_station_details("INVALID_UUID")
 
 
-@pytest.mark.asyncio
-async def test_get_station_details_connection_error(mock_pegelonline):
+async def test_get_station_details_connection_error(mock_pegelonline_with_data):
     """Test async_get_station_details with connection error."""
+    api = await mock_pegelonline_with_data()
     with pytest.raises(ClientError):
-        await mock_pegelonline.async_get_station_details("CONNECT_ERROR")
+        await api.async_get_station_details("CONNECT_ERROR")
 
 
-@pytest.mark.asyncio
-async def test_get_station_measurements(mock_pegelonline):
+async def test_get_station_measurements(mock_pegelonline_with_data):
     """Test async_get_station_measurements."""
-    measurement = await mock_pegelonline.async_get_station_measurements(
+    api = await mock_pegelonline_with_data()
+    measurement = await api.async_get_station_measurements(
         "915d76e1-xxxx-xxxx-xxxx-4d144cd771cc"
     )
     assert isinstance(measurement, StationMeasurements)
@@ -135,7 +134,7 @@ async def test_get_station_measurements(mock_pegelonline):
     assert measurement.water_temperature.uom == "°C"
     assert measurement.water_temperature.value == 22.1
 
-    measurement = await mock_pegelonline.async_get_station_measurements(
+    measurement = await api.async_get_station_measurements(
         "07374faf-xxxx-xxxx-xxxx-adc0e0784c4b"
     )
     assert isinstance(measurement, StationMeasurements)
