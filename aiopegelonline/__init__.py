@@ -6,7 +6,7 @@ import json
 
 from aiohttp.client import ClientSession
 
-from .const import BASE_URL, CONNECT_ERRORS, LOGGER, REQUEST_TIMEOUT
+from .const import BASE_URL, CONNECT_ERRORS, LOGGER
 from .exceptions import PegelonlineDataError
 from .models import Station, StationMeasurements
 
@@ -22,9 +22,7 @@ class PegelOnline:
         """Perform an async request."""
         LOGGER.debug("REQUEST url: %s params: %s", url, params)
         try:
-            async with self.session.get(
-                url, params=params, timeout=REQUEST_TIMEOUT
-            ) as resp:
+            async with self.session.get(url, params=params) as resp:
                 result = await resp.text()
                 LOGGER.debug("RESPONSE status: %s text: %s", resp.status, result)
                 result = json.loads(result)

@@ -1,7 +1,7 @@
 """Setup module for aiopegelonline."""
 from pathlib import Path
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 PROJECT_DIR = Path(__file__).parent.resolve()
 README_FILE = PROJECT_DIR / "README.md"
