@@ -13,15 +13,33 @@ from aiopegelonline.const import BASE_URL
 from .const import MOCK_DATA
 
 
-@pytest.fixture()
-def mock_pegelonline():
-    """Fixture that the PegelOnline is used with mocked response."""
-    with aioresponses() as mock_resp:
+@pytest.fixture
+def mock_aioresponse():
+    """Mock a web request and provide a response."""
+    with aioresponses() as m:
+        yield m
+
+@pytest.fixture
+async def mock_pegelonline():
+    """Return PegelOnline session."""
+    session = aiohttp.ClientSession()
+    api = PegelOnline(session)
+    yield api
+    await session.close()
+
+@pytest.fixture
+def mock_pegelonline_with_data(mock_aioresponse, mock_pegelonline):
+    """Comfort fixture to initialize deCONZ session."""
+
+    async def data_to_pegelonline() -> PegelOnline:
+        """Initialize PegelOnline session."""
         for path, data in MOCK_DATA.items():
-            mock_resp.get(
+            mock_aioresponse.get(
                 f"{BASE_URL}/{path}",
                 status=data["status"],
                 body=json.dumps(data["body"]),
                 exception=data.get("exception"),
             )
-        yield PegelOnline(aiohttp.ClientSession())
+        return mock_pegelonline
+
+    return data_to_pegelonline
