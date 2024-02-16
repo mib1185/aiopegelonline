@@ -155,3 +155,31 @@ async def test_get_station_measurements(mock_pegelonline_with_data):
         "water_level": None,
         "water_temperature": None,
     }
+
+
+async def test_get_station_details_cached(mock_pegelonline_with_cached_data):
+    """Test response cache."""
+    api = await mock_pegelonline_with_cached_data()
+    station = await api.async_get_station_details(
+         "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+     )
+    assert isinstance(station, Station)
+    assert station.uuid == "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+    assert station.name == "DRESDEN"
+    assert station.agency == "STANDORT DRESDEN"
+    assert station.river_kilometer == 55.63
+    assert station.longitude == 13.738831783620384
+    assert station.latitude == 51.054459765598125
+    assert station.water_name == "ELBE"
+
+    station = await api.async_get_station_details(
+         "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+     )
+    assert isinstance(station, Station)
+    assert station.uuid == "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+    assert station.name == "DRESDEN"
+    assert station.agency == "STANDORT DRESDEN"
+    assert station.river_kilometer == 55.63
+    assert station.longitude == 13.738831783620384
+    assert station.latitude == 51.054459765598125
+    assert station.water_name == "ELBE"

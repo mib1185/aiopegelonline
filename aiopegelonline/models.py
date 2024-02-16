@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 
 class Station:
     """Representation of a station."""
@@ -93,3 +95,11 @@ class StationMeasurements:
             "water_level": self.water_level,
             "water_temperature": self.water_temperature,
         }
+
+
+@dataclass
+class CacheEntry:
+    """Representation of response cache entry."""
+
+    etag: str | None
+    result: dict | None
