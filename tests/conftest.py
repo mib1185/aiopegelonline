@@ -5,12 +5,12 @@ import json
 
 import aiohttp
 import pytest
-from aioresponses import aioresponses
+from aioresponses import CallbackResult, aioresponses
 
 from aiopegelonline import PegelOnline
 from aiopegelonline.const import BASE_URL
 
-from .const import MOCK_DATA
+from .const import MOCK_DATA, MOCK_STATION_DATA_DRESDEN
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ async def mock_pegelonline():
 
 @pytest.fixture
 def mock_pegelonline_with_data(mock_aioresponse, mock_pegelonline):
-    """Comfort fixture to initialize deCONZ session."""
+    """Comfort fixture to initialize pegelonline session."""
 
     async def data_to_pegelonline() -> PegelOnline:
         """Initialize PegelOnline session."""
@@ -40,6 +40,24 @@ def mock_pegelonline_with_data(mock_aioresponse, mock_pegelonline):
                 body=json.dumps(data["body"]),
                 exception=data.get("exception"),
             )
+        return mock_pegelonline
+
+    return data_to_pegelonline
+
+@pytest.fixture
+def mock_pegelonline_with_cached_data(mock_aioresponse, mock_pegelonline):
+    """Comfort fixture to initialize pegelonline session with cached data."""
+
+    def cache_response(_, **kwargs) -> CallbackResult:
+        etag = "etag_station_dresden"
+        if (headers := kwargs.get("headers")) and headers.get("If-None-Match") == etag:
+            return CallbackResult(status=304, body="", headers={"Etag": etag})
+        return CallbackResult(status=200, body=json.dumps(MOCK_STATION_DATA_DRESDEN), headers={"Etag": etag})
+
+    async def data_to_pegelonline() -> PegelOnline:
+        """Initialize PegelOnline session."""
+        query = f"{BASE_URL}/stations/70272185-xxxx-xxxx-xxxx-43bea330dcae.json?prettyprint=false"
+        mock_aioresponse.get(query, callback=cache_response, repeat=True)
         return mock_pegelonline
 
     return data_to_pegelonline

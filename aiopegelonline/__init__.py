@@ -8,7 +8,7 @@ from aiohttp.client import ClientSession
 
 from .const import BASE_URL, CONNECT_ERRORS, LOGGER
 from .exceptions import PegelonlineDataError
-from .models import Station, StationMeasurements
+from .models import CacheEntry, Station, StationMeasurements
 
 
 class PegelOnline:
@@ -17,15 +17,34 @@ class PegelOnline:
     def __init__(self, aiohttp_session: ClientSession) -> None:
         """Pegelonline api init."""
         self.session: ClientSession = aiohttp_session
+        self.cache: dict[str, CacheEntry] = {}
 
     async def _async_do_request(self, url: str, params: dict):
         """Perform an async request."""
-        LOGGER.debug("REQUEST url: %s params: %s", url, params)
+        cache_key = f"{url}_{params}"
+        if cache_key not in self.cache:
+            self.cache[cache_key] = CacheEntry(None, None)
+
+        cache_entry = self.cache[cache_key]
+
+        headers = {}
+        if (etag := cache_entry.etag) is not None:
+            headers = {"If-None-Match": etag}
+
+        LOGGER.debug("REQUEST url: %s params: %s headers: %s", url, params, headers)
         try:
-            async with self.session.get(url, params=params) as resp:
+            async with self.session.get(url, params=params, headers=headers) as resp:
                 result = await resp.text()
                 LOGGER.debug("RESPONSE status: %s text: %s", resp.status, result)
+
+                if resp.status == 304:  # 304 = not modified
+                    return cache_entry.result
+
+                if cache_entry.etag is None:
+                    cache_entry.etag = resp.headers.get("Etag")
+
                 result = json.loads(result)
+                cache_entry.result = result
                 if resp.status != 200:
                     raise PegelonlineDataError(
                         result.get("status"), result.get("message")
