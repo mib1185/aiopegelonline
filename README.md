@@ -72,3 +72,8 @@ if __name__ == "__main__":
 ## References
 
 - [PEGELONLINE api reference (German)](https://www.pegelonline.wsv.de/webservice/dokuRestapi)
+
+---
+You like my work?
+
+<a href="https://www.buymeacoffee.com/mib1185" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
