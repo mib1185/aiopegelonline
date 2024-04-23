@@ -65,6 +65,8 @@ class PegelOnline:
         for station in stations:
             result[station["uuid"]] = Station(station)
 
+        LOGGER.debug("all stations: %s", result)
+
         return result
 
     async def async_get_nearby_stations(
@@ -85,6 +87,8 @@ class PegelOnline:
         for station in stations:
             result[station["uuid"]] = Station(station)
 
+        LOGGER.debug("nearby stations: %s", result)
+
         return result
 
     async def async_get_station_details(self, uuid: str) -> Station:
@@ -93,7 +97,11 @@ class PegelOnline:
             f"{BASE_URL}/stations/{uuid}.json", {"prettyprint": "false"}
         )
 
-        return Station(station)
+        result = Station(station)
+
+        LOGGER.debug("station %s details: %s", uuid, result)
+
+        return result
 
     async def async_get_station_measurements(self, uuid: str) -> StationMeasurements:
         """Get all current measurements of a station."""
@@ -106,4 +114,8 @@ class PegelOnline:
             },
         )
 
-        return StationMeasurements(station["timeseries"])
+        result = StationMeasurements(station["timeseries"])
+
+        LOGGER.debug("station %s measurements: %s", uuid, result)
+
+        return result
