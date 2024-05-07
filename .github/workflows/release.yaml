@@ -36,12 +36,12 @@ jobs:
         uses: salsify/action-detect-and-tag-new-version@v2.0.3
         with:
           version-command: |
-            sed -n 's/VERSION = \"\(.*\)\"/\1/p' setup.py
+            sed -n 's/version = \"\(.*\)\"/\1/p' pyproject.toml
 
       - name: Bump version for developmental release
         if: "! steps.check-version.outputs.tag"
         run: |
-          sed "s/VERSION = \"\(.*\)\"/VERSION = \"\1\.dev\.`date +%Y%m%d%H%M%S`\"/" -i setup.py
+          sed "s/version = \"\(.*\)\"/version = \"\1\.dev\.`date +%Y%m%d%H%M%S`\"/" -i pyproject.toml
 
       - name: Build package
         run: |

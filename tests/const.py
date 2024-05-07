@@ -2,7 +2,7 @@
 
 from aiohttp import ClientError
 
-MOCK_STATION_DATA_DRESDEN = {
+MOCK_STATION_DATA_DRESDEN: dict = {
     "uuid": "70272185-xxxx-xxxx-xxxx-43bea330dcae",
     "number": "501060",
     "shortname": "DRESDEN",
@@ -14,7 +14,7 @@ MOCK_STATION_DATA_DRESDEN = {
     "water": {"shortname": "ELBE", "longname": "ELBE"},
 }
 
-MOCK_MEASUREMENT_DATA_HANAU_BRIDGE = {
+MOCK_MEASUREMENT_DATA_HANAU_BRIDGE: dict = {
     "uuid": "07374faf-xxxx-xxxx-xxxx-adc0e0784c4b",
     "number": "24700347",
     "shortname": "HANAU BRÜCKE DFH",
@@ -41,7 +41,7 @@ MOCK_MEASUREMENT_DATA_HANAU_BRIDGE = {
     ],
 }
 
-MOCK_STATION_DATA_WUERZBURG = {
+MOCK_STATION_DATA_WUERZBURG: dict = {
     "uuid": "915d76e1-xxxx-xxxx-xxxx-4d144cd771cc",
     "number": "24300600",
     "shortname": "WÜRZBURG",
@@ -53,7 +53,7 @@ MOCK_STATION_DATA_WUERZBURG = {
     "water": {"shortname": "MAIN", "longname": "MAIN"},
 }
 
-MOCK_MEASUREMENT_DATA_WUERZBURG = {
+MOCK_MEASUREMENT_DATA_WUERZBURG: dict = {
     **MOCK_STATION_DATA_WUERZBURG,
     "timeseries": [
         {
@@ -136,7 +136,7 @@ MOCK_MEASUREMENT_DATA_WUERZBURG = {
     ],
 }
 
-MOCK_DATA = {
+MOCK_DATA: dict = {
     "stations.json?prettyprint=false": {
         "status": 200,
         "body": [
