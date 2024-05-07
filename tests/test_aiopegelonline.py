@@ -161,8 +161,8 @@ async def test_get_station_details_cached(mock_pegelonline_with_cached_data):
     """Test response cache."""
     api = await mock_pegelonline_with_cached_data()
     station = await api.async_get_station_details(
-         "70272185-xxxx-xxxx-xxxx-43bea330dcae"
-     )
+        "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+    )
     assert isinstance(station, Station)
     assert station.uuid == "70272185-xxxx-xxxx-xxxx-43bea330dcae"
     assert station.name == "DRESDEN"
@@ -173,8 +173,8 @@ async def test_get_station_details_cached(mock_pegelonline_with_cached_data):
     assert station.water_name == "ELBE"
 
     station = await api.async_get_station_details(
-         "70272185-xxxx-xxxx-xxxx-43bea330dcae"
-     )
+        "70272185-xxxx-xxxx-xxxx-43bea330dcae"
+    )
     assert isinstance(station, Station)
     assert station.uuid == "70272185-xxxx-xxxx-xxxx-43bea330dcae"
     assert station.name == "DRESDEN"

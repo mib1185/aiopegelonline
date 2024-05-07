@@ -19,6 +19,7 @@ def mock_aioresponse():
     with aioresponses() as m:
         yield m
 
+
 @pytest.fixture
 async def mock_pegelonline():
     """Return PegelOnline session."""
@@ -26,6 +27,7 @@ async def mock_pegelonline():
     api = PegelOnline(session)
     yield api
     await session.close()
+
 
 @pytest.fixture
 def mock_pegelonline_with_data(mock_aioresponse, mock_pegelonline):
@@ -44,6 +46,7 @@ def mock_pegelonline_with_data(mock_aioresponse, mock_pegelonline):
 
     return data_to_pegelonline
 
+
 @pytest.fixture
 def mock_pegelonline_with_cached_data(mock_aioresponse, mock_pegelonline):
     """Comfort fixture to initialize pegelonline session with cached data."""
@@ -52,7 +55,11 @@ def mock_pegelonline_with_cached_data(mock_aioresponse, mock_pegelonline):
         etag = "etag_station_dresden"
         if (headers := kwargs.get("headers")) and headers.get("If-None-Match") == etag:
             return CallbackResult(status=304, body="", headers={"Etag": etag})
-        return CallbackResult(status=200, body=json.dumps(MOCK_STATION_DATA_DRESDEN), headers={"Etag": etag})
+        return CallbackResult(
+            status=200,
+            body=json.dumps(MOCK_STATION_DATA_DRESDEN),
+            headers={"Etag": etag},
+        )
 
     async def data_to_pegelonline() -> PegelOnline:
         """Initialize PegelOnline session."""
