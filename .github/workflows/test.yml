@@ -16,17 +16,22 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4.1.4
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5.1.0
         with:
-          python-version: "3.9"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements_dev.txt -e .
+          python -m venv venv
+          . venv/bin/activate
+          python --version
+          pip install uv
+          uv pip install -r requirements_dev.txt -e .
 
       - name: Run pre-commit
         run: |
+          . venv/bin/activate
           pre-commit run --all-files --show-diff-on-failure
 
   pytest:
@@ -49,10 +54,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements_dev.txt -e .
+          python -m venv venv
+          . venv/bin/activate
+          python --version
+          pip install uv
+          uv pip install -r requirements_dev.txt -e .
 
       - name: Run tests
         run: |
+          . venv/bin/activate
           pytest tests --cov=aiopegelonline --cov-report=xml
 
   codecov:
@@ -64,17 +74,22 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4.1.4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5.1.0
         with:
-          python-version: "3.9"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements_dev.txt -e .
+          python -m venv venv
+          . venv/bin/activate
+          python --version
+          pip install uv
+          uv pip install  -r requirements_dev.txt -e .
 
       - name: Run tests
         run: |
+          . venv/bin/activate
           pytest tests --cov=aiopegelonline --cov-report=xml
 
       - name: Upload coverage reports to Codecov
