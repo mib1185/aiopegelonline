@@ -1,6 +1,6 @@
 -r requirements.txt
 aioresponses==0.7.6
-black==24.3.0
+black==24.4.2
 mypy==1.10.0
 pre-commit-hooks==4.6.0
 pre-commit==3.4.0
