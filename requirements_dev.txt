@@ -5,7 +5,7 @@ mypy==1.10.0
 pre-commit-hooks==4.6.0
 pre-commit==3.7.0
 pylint==3.1.0
-pytest-asyncio==0.23.6
+pytest-asyncio==0.23.8
 pytest-cov==4.1.0
 pytest==8.2.0
 reorder-python-imports==3.12.0
