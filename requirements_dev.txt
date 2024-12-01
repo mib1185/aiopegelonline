@@ -1,11 +1,11 @@
 -r requirements.txt
-aioresponses==0.7.6
+aioresponses==0.7.7
 black==24.10.0
 mypy==1.13.0
 pre-commit-hooks==5.0.0
 pre-commit==4.0.1
-pylint==3.3.1
+pylint==3.3.2
 pytest-asyncio==0.24.0
 pytest-cov==6.0.0
-pytest==8.3.3
+pytest==8.3.4
 reorder-python-imports==3.14.0
