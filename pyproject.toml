@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aiopegelonline"
-version = "0.1.0"
+version = "0.1.1"
 description = "Asynchronous library to retrieve data from PEGELONLINE."
 authors = [{ name = "mib1185" }]
 readme = "README.md"
