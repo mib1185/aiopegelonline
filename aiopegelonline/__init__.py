@@ -50,7 +50,12 @@ class PegelOnline:
                         result.get("status"), result.get("message")
                     )
         except CONNECT_ERRORS as err:
-            LOGGER.exception("Error while getting data: %s", err.__class__.__name__)
+            LOGGER.debug("connection error", exc_info=True)
+            LOGGER.error(
+                "Error while getting data: %s: %s",
+                err.__class__.__name__,
+                err.__class__.__cause__,
+            )
             raise err
 
         return result
