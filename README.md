@@ -16,7 +16,7 @@ breaking changes may occure at every time
 
 ## Requirements
 
-- Python >= 3.9
+- Python >= 3.10
 - aiohttp
 
 ## Installation
