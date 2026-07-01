@@ -9,14 +9,13 @@ description = "Asynchronous library to retrieve data from PEGELONLINE."
 authors = [{ name = "mib1185" }]
 readme = "README.md"
 license.text = "Apache-2.0"
-requires-python = '>=3.9'
+requires-python = '>=3.10'
 dependencies = ["aiohttp"]
 classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
